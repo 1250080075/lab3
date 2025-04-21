@@ -1,0 +1,161 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class nhanvien {
+    private String maso;
+    private String hoten;
+    private double luongcoban;
+    private double hesoluong;
+    private static int soluongnhanvien = 0;
+
+    public nhanvien() {
+        this.maso = "";
+        this.hoten = "";
+        this.luongcoban = 0.0;
+        this.hesoluong = 1.0;
+        soluongnhanvien++;
+    }
+
+    public nhanvien(String maso, String hoten, double luongcoban, double hesoluong) {
+        this.maso = maso;
+        this.hoten = hoten;
+        this.luongcoban = luongcoban;
+        this.hesoluong = hesoluong;
+        soluongnhanvien++;
+    }
+
+    public nhanvien(nhanvien other) {
+        this.maso = other.maso;
+        this.hoten = other.hoten;
+        this.luongcoban = other.luongcoban;
+        this.hesoluong = other.hesoluong;
+        soluongnhanvien++;
+    }
+
+    public String getmaso() {
+        return maso;
+    }
+
+    public void setmaso(String maso) {
+        this.maso = maso;
+    }
+
+    public String gethoten() {
+        return hoten;
+    }
+
+    public void sethoten(String hoten) {
+        this.hoten = hoten;
+    }
+
+    public double gethesoluong() {
+        return hesoluong;
+    }
+
+    public void sethesoluong(double hesoluong) {
+        this.hesoluong = hesoluong;
+    }
+
+    public void nhapnhanvien() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhập mã số nhân viên: ");
+        this.maso = scanner.nextLine();
+        System.out.print("Nhập họ tên nhân viên: ");
+        this.hoten = scanner.nextLine();
+        System.out.print("Nhập lương cơ bản: ");
+        this.luongcoban = scanner.nextDouble();
+        System.out.print("Nhập hệ số lương: ");
+        this.hesoluong = scanner.nextDouble();
+        scanner.nextLine();
+    }
+    public void xuatnhanvien() {
+        System.out.println("Ma so: " + maso);
+        System.out.println("Ho ten: " + hoten);
+        System.out.println("Luong co ban: " + luongcoban);
+        System.out.println("He so luong: " + hesoluong);
+    }
+    public double tinhluong() {
+        return luongcoban * hesoluong;
+    }
+    public void insoluong() {
+        System.out.println("Luong cua nhan vien " + hoten + " la: " + tinhluong());
+    }
+    public static int getsoluongnhanvien() {
+        return soluongnhanvien;
+    }
+}
+class danhsachnhanvien {
+    private List<nhanvien> danhsach;
+    public danhsachnhanvien() {
+        this.danhsach = new ArrayList<>();
+    }
+    public void nhapdanhsach() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Nhap so luong nhan vien trong danh sach: ");
+        int n = scanner.nextInt();
+        scanner.nextLine();
+        for (int i = 0; i < n; i++) {
+            System.out.println("Nhap thong tin cho nhan vien thu " + (i + 1) + ":");
+            nhanvien nv = new nhanvien();
+            nv.nhapnhanvien();
+            danhsach.add(nv);
+        }
+    }
+    public void xuatdanhsach() {
+        System.out.println("\n--- Danh Sach Nhan Vien ---");
+        for (nhanvien nv : danhsach) {
+            nv.xuatnhanvien();
+            nv.insoluong();
+            System.out.println("-------------------------");
+        }
+    }
+    public List<nhanvien> getdanhsach() {
+        return danhsach;
+    }
+}
+
+public class demo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        nhanvien nv1 = new nhanvien();
+        nhanvien nv2 = new nhanvien("NV001", "Nguyen Van A", 5000000, 2.5);
+        nhanvien nv3 = new nhanvien(nv2);
+        System.out.println("--- Nhap du lieu cho tung nhan vien ---")
+        System.out.println("\nNhap du lieu cho nhan vien 1:");
+        nv1.nhapnhanvien();
+        nv1.xuatnhanvien();
+        nv1.insoluong();
+        System.out.println("\nNhap du lieu cho nhan vien 2:");
+        nv2.nhapnhanvien();
+        nv2.xuatnhanvien();
+        nv2.insoluong();
+        System.out.println("\nNhap du lieu cho nhan vien 3:");
+        nv3.nhapnhanvien();
+        nv3.xuatnhanvien();
+        nv3.insoluong();
+        System.out.print("\nNhap ten moi cho nhan vien co ma so " + nv1.getmaso() + ": ");
+        String tenmoi = scanner.nextLine();
+        nv1.sethoten(tenmoi);
+        System.out.println("\n--- Thong tin nhan vien 1 sau khi thay doi ten ---");
+        nv1.xuatnhanvien();
+        nv1.insoluong();
+        nhanvien nvcaonhat = nv1;
+        if (nv2.gethesoluong() > nvcaonhat.gethesoluong()) {
+            nvcaonhat = nv2;
+        }
+        if (nv3.gethesoluong() > nvcaonhat.gethesoluong()) {
+            nvcaonhat = nv3;
+        }
+        System.out.println("\n--- Thong tin nhan vien co he so luong cao nhat ---");
+        nvcaonhat.xuatnhanvien();
+        nvcaonhat.insoluong();
+
+        danhsachnhanvien dsnv = new danhsachnhanvien();
+        System.out.println("\n--- Nhap danh sach nhan vien ---");
+        dsnv.nhapdanhsach();
+        dsnv.xuatdanhsach();
+        System.out.println("\nSo luong nhan vien hien tai: " + nhanvien.getsoluongnhanvien());
+        scanner.close();
+    }
+}
