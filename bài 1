@@ -1,0 +1,109 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+class hs {
+    private int maso;
+    private String hoten;
+    private double diemtb;
+    public int getMaso() { return maso; }
+    public void setMaso(int maso) { this.maso = maso; }
+    public String getHoten() { return hoten; }
+    public void setHoten(String hoten) { this.hoten = hoten; }
+    public double getDiemtb() { return diemtb; }
+    public void setDiemtb(double diemtb) { this.diemtb = diemtb; }
+    public hs() {
+        this.maso = 0;
+        this.hoten = "";
+        this.diemtb = 0.0;
+    }
+    public hs(int maso, String hoten, double diemtb) {
+        this.maso = maso;
+        this.hoten = hoten;
+        this.diemtb = diemtb;
+    }
+    public hs(hs dtm) {
+        this.maso = dtm.maso;
+        this.hoten = dtm.hoten;
+        this.diemtb = dtm.diemtb;
+    }
+    public void nhap() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập mã số: ");
+        maso = sc.nextInt();
+        sc.nextLine();
+        System.out.print("Nhập họ và tên: ");
+        hoten = sc.nextLine();
+        System.out.print("Nhập điểm trung bình: ");
+        diemtb = sc.nextDouble();
+    }
+    public void kq() {
+        System.out.println(maso + " - " + hoten + " - " + diemtb);
+    }
+    public void xeploai() {
+        if (diemtb < 5) System.out.println("Xếp loại: Yếu");
+        else if (diemtb < 7) System.out.println("Xếp loại: Trung bình");
+        else System.out.println("Xếp loại: Giỏi");
+    }
+}
+class Demo1 {
+    public static void main(String[] args) {
+        hs hs1 = new hs();
+        hs1.nhap();
+        hs1.kq();
+        hs1.xeploai();
+        hs hs2 = new hs(2, "Nguyễn Quốc Huy", 7f);
+        hs2.kq();
+        hs2.xeploai();
+        hs hs3 = new hs(hs2);
+        hs3.kq();
+        hs3.setHoten("Nguyễn Tuấn Vũ");
+        hs3.kq();
+        hs3.xeploai();
+        double max = hs1.getDiemtb();
+        String ht = hs1.getHoten();
+        if (max < hs2.getDiemtb()) {
+            max = hs2.getDiemtb();
+            ht = hs2.getHoten();
+        }
+        if (max < hs3.getDiemtb()) {
+            max = hs3.getDiemtb();
+            ht = hs3.getHoten();
+        }
+        System.out.println("Học sinh có điểm trung bình cao nhất là " + ht + ": " + max);
+    }
+}
+class DanhSachHocSinh {
+    private ArrayList<hs> ds = new ArrayList<>();
+    public void nhapDanhSach() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Nhập số lượng học sinh: ");
+        int n = sc.nextInt();
+        sc.nextLine();
+        for (int i = 0; i < n; i++) {
+            System.out.println("Nhập thông tin học sinh thứ " + (i + 1));
+            hs h = new hs();
+            h.nhap();
+            ds.add(h);
+        }
+    }
+    public void inDanhSach() {
+        for (hs h : ds) h.kq();
+    }
+    public void sapXepGiamTheoDiem() {
+        Collections.sort(ds, new Comparator<hs>() {
+            public int compare(hs a, hs b) {
+                return Double.compare(b.getDiemtb(), a.getDiemtb());
+            }
+        });
+    }
+}
+class Demo2 {
+    public static void main(String[] args) {
+        DanhSachHocSinh ds = new DanhSachHocSinh();
+        ds.nhapDanhSach();
+        ds.sapXepGiamTheoDiem();
+        System.out.println("Danh sách học sinh sau khi sắp xếp:");
+        ds.inDanhSach();
+    }
+}
